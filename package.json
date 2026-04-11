@@ -1,0 +1,21 @@
+{
+  "name": "rush-tracker-bot",
+  "version": "1.0.0",
+  "description": "minecraft rush statistics tracker discord bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rushtracker/bot.git"
+  },
+  "author": "lllab",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "discord.js": "^14.26.2",
+    "dotenv": "^17.4.1",
+    "mongoose": "^8.23.0",
+    "quick.db": "^9.1.7"
+  }
+}
