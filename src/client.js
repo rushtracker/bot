@@ -1,6 +1,6 @@
-const { GatewayIntentBits } = require('discord.js');
+import { GatewayIntentBits } from 'discord.js';
 
-const Bot = require('./core/Bot.js');
+import Bot from './core/Bot.js';
 
 const client = new Bot({
   intents: [
@@ -9,5 +9,8 @@ const client = new Bot({
 });
 
 async function loadClient() {
-  
+  await client.loadAll();
+  await client.loadClient(process.env.TOKEN);
 }
+
+loadClient();

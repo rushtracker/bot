@@ -1,6 +1,6 @@
-require('./bootstrap');
+import './bootstrap.js';
 
-const { ShardingManager } = require('discord.js');
+import { ShardingManager } from 'discord.js';
 
 const manager = new ShardingManager('./src/client.js', {
   token: process.env.TOKEN,

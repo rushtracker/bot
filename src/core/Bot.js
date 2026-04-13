@@ -1,7 +1,12 @@
-const { Client, Collection, ApplicationCommandOptionType } = require('discord.js');
-const { MongoDriver } = require('quick.db');
+import { Client, Collection, ApplicationCommandOptionType } from 'discord.js';
 
-module.exports = class Bot extends Client {
+import Utils from '../classes/Utils.js';
+import config from '../config.js';
+
+export default class Bot extends Client {
+  utils = new Utils();
+  config = config;
+
   commands = new Collection();
   contextmenus = new Collection();
   buttons = new Collection();
@@ -23,5 +28,80 @@ module.exports = class Bot extends Client {
 
   getApplicationSubCommands(commands, name) {
     return this.getApplicationCommand(commands, name).options?.filter((opt) => opt.type === ApplicationCommandOptionType.Subcommand);
+  }
+
+  getValidator(type) {
+    switch(type) {
+      case 'commands':
+        return (i) => i?.run && i?.config?.name && i?.config?.description;
+      case 'contextmenus':
+        return (i) => i?.run && i?.config?.name && i?.config?.type;
+      default:
+        return (i) => i?.run && i?.config?.name;
+    }
+  }
+
+  async loadInteraction(dir, collection, validate) {
+    const filesPath = this.utils.getFiles(dir, ['.js']);
+
+    for (const path of filesPath) {
+      const { default: Instance } = await import(`../../${path}`);
+      const interaction = new Instance(this);
+
+      if (!validate(interaction)) continue;
+
+      collection.set(interaction.config.name, interaction);
+    }
+  }
+
+  async loadInteractions() {
+    const types = [
+      'commands',
+      'contextmenus',
+      'buttons',
+      'selectmenus',
+      'modals'
+    ];
+
+    for (const type of types) {
+      await this.loadInteraction(
+        `./src/interactions/${type}`,
+        this[type],
+        this.getValidator(type)
+      );
+    }
+  }
+
+  async loadEvents() {
+    const filesPath = this.utils.getFiles('./src/listeners', ['.js']);
+
+    for (const path of filesPath) {
+      const { default: Instance } = await import(`../../${path}`);
+      const event = new Instance(this);
+
+      if (!event.run || !event.config?.name) continue;
+
+      this.events.set(event.config.name, event);
+
+      const target = event.config.rest ? this.rest : event.config.process ? process : this;
+      target.on(event.config.name, (...args) => event.run(...args));
+    }
+  }
+
+  async deployClientCommands() {
+    return this.application.commands.set(this.interactions).catch(() => {});
+  }
+
+  async removeClientCommands() {
+    return this.application.commands.set([]).catch(() => {});
+  }
+
+  async loadAll() {
+    await this.loadInteractions();
+    await this.loadEvents();
+  }
+
+  async loadClient(token) {
+    return this.login(token).catch(() => {});
   }
 };
