@@ -8,7 +8,6 @@ export default class ErrorInteractionEvent extends Event {
   }
 
   async run(error) {
-    this.errorReply(interaction);
     console.log(error);
   }
 }
