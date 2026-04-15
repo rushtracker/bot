@@ -16,7 +16,6 @@ export default class PingCommand extends Command {
     this.safeReply(interaction, {
       components: [
         new Container()
-        .addHeading(HeadingLevel.Three, 'latence')
         .addText(this.client.ws.ping < 0 ? 'latence indisponible' : `${this.client.ws.ping}ms`)
       ]
     });
