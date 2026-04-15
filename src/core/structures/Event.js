@@ -3,6 +3,7 @@ import Base from './Base.js';
 export default class Event extends Base {
   constructor(client, {
     name,
+    event,
     process,
     rest
   } = {}) {
@@ -10,6 +11,7 @@ export default class Event extends Base {
 
     this.config = {
       name,
+      event,
       process,
       rest
     };

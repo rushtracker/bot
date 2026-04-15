@@ -84,7 +84,9 @@ export default class Bot extends Client {
       this.events.set(event.config.name, event);
 
       const target = event.config.rest ? this.rest : event.config.process ? process : this;
-      target.on(event.config.name, (...args) => event.run(...args));
+      const emitterEvent = event.config.event || event.config.name;
+
+      target.on(emitterEvent, (...args) => event.run(...args));
     }
   }
 

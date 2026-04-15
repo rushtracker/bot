@@ -1,6 +1,6 @@
 import Event from '../../core/structures/Event.js';
 
-export default class ErrorInteraction extends Event {
+export default class ErrorInteractionEvent extends Event {
   constructor(client) {
     super(client, {
       name: 'error:interaction'
@@ -8,6 +8,7 @@ export default class ErrorInteraction extends Event {
   }
 
   async run(error) {
+    this.errorReply(interaction);
     console.log(error);
   }
 }

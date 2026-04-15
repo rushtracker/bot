@@ -1,6 +1,7 @@
-import { MessageFlags } from 'discord.js';
+import { HeadingLevel } from 'discord.js';
+
 import Command from '../../core/structures/Command.js';
-import Container, { fmt } from '../../services/Container.js';
+import Container from '../../services/Container.js';
 
 export default class PingCommand extends Command {
   constructor(client) {
@@ -12,12 +13,11 @@ export default class PingCommand extends Command {
   }
 
   async run(interaction) {
-    interaction.reply({
-      flags: [MessageFlags.IsComponentsV2],
+    this.safeReply(interaction, {
       components: [
         new Container()
-        .h3('latence')
-        .text(`${fmt.bold('discord:')} ${this.client.ws.ping < 0 ? 'latence indisponible' : `${this.client.ws.ping}ms`}`)
+        .addHeading(HeadingLevel.Three, 'latence')
+        .addText(this.client.ws.ping < 0 ? 'latence indisponible' : `${this.client.ws.ping}ms`)
       ]
     });
   }
