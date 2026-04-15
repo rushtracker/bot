@@ -4,7 +4,9 @@
   "description": "minecraft rush statistics tracker discord bot",
   "main": "index.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "deploy": "node scripts/deploy.js",
+    "remove": "node scripts/remove.js"
   },
   "repository": {
     "type": "git",
