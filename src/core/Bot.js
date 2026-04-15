@@ -22,12 +22,10 @@ export default class Bot extends Client {
     return [].concat(this.commands.map((c) => c.config), this.contextmenus.map((c) => c.config));
   }
 
-  getApplicationCommand(commands, name) {
-    return commands.find((c) => c.name === name);
-  }
+  async getApplicationCommand(name) {
+    const commands = await this.application.commands.fetch();
 
-  getApplicationSubCommands(commands, name) {
-    return this.getApplicationCommand(commands, name).options?.filter((opt) => opt.type === ApplicationCommandOptionType.Subcommand);
+    return commands.find((c) => c.name === name);
   }
 
   getValidator(type) {
@@ -91,11 +89,11 @@ export default class Bot extends Client {
   }
 
   async deployClientCommands() {
-    return this.application.commands.set(this.interactions).catch(() => {});
+    return this.application.commands.set(this.interactions);
   }
 
   async removeClientCommands() {
-    return this.application.commands.set([]).catch(() => {});
+    return this.application.commands.set([]);
   }
 
   async loadAll() {
@@ -104,6 +102,6 @@ export default class Bot extends Client {
   }
 
   async loadClient(token) {
-    return this.login(token).catch(() => {});
+    return this.login(token);
   }
 };
