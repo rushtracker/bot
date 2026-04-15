@@ -2,16 +2,12 @@ import Base from './Base.js';
 
 export default class SelectMenu extends Base {
   constructor(client, {
-    name,
-    perms,
-    meperms
+    name
   } = {}) {
     super(client);
 
     this.config = {
-      name,
-      perms,
-      meperms
+      name
     };
   }
 }

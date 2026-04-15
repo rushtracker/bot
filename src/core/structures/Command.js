@@ -5,8 +5,6 @@ export default class Command extends Base {
     name,
     description,
     category,
-    perms,
-    meperms,
     options
   } = {}) {
     super(client);
@@ -15,8 +13,6 @@ export default class Command extends Base {
       name,
       description,
       category,
-      perms,
-      meperms,
       options
     };
   }

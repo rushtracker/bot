@@ -3,17 +3,13 @@ import Base from './Base.js';
 export default class ContextMenu extends Base {
   constructor(client, {
     name,
-    type,
-    perms,
-    meperms
+    type
   } = {}) {
     super(client);
 
     this.config = {
       name,
-      type,
-      perms,
-      meperms
+      type
     };
   }
 }
